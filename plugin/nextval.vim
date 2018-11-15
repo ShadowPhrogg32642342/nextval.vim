@@ -121,12 +121,12 @@ let s:re_hex = "\\(8'h\\|#16r\\|16#\\|16r\\|" " more pre-chars
 let s:re_hex = s:re_hex . 'x"\|#x\|0[xh]\|\\[xuU]\|[XH]' . "'\\|" " 2 pre-chars
 let s:re_hex = s:re_hex . '[#\$hH]\|' " 1 pre-char
 let s:re_hex = s:re_hex . '\|\)' " no pre-chars
-let s:re_hex = s:re_hex . '\([0-9a-fA-F]\+\)' " hex himself
+let s:re_hex = s:re_hex . '\([0-9a-fA-F]\+\)' " hex itself
 let s:re_hex = s:re_hex . "\\([hH#\"']\\|\\)" " post-chars
 
 let s:re_num = '\([''"]\?\)\(-\?[0-9]*\.[0-9]\+\)\([^0-9]\+\)\?'
 
-let s:re_bool = '\([''"]\)\?\(true\|false\|yes\|no\|on\|off\c\)\([''"]\)\?'
+let s:re_bool = '\([''"]\)\?\(true\|false\|yes\|no\|on\|off\|\%(en\|dis\)abled\?\c\)\([''"]\)\?'
 
 function s:nextval_exec(word, operator)
 	let word=a:word
@@ -248,14 +248,20 @@ endfunction
 function s:nextbool(value)
 	let values={
 \               'false': 'true',
-\               'FALSE': 'TRUE',
 \               'False': 'True',
+\               'FALSE': 'TRUE',
 \               'no': 'yes',
 \               'No': 'Yes',
 \               'NO': 'YES',
 \               'off': 'on',
 \               'Off': 'On',
-\               'OFF': 'ON'
+\               'OFF': 'ON',
+\               'enable': 'disable',
+\               'Enable': 'Disable',
+\               'ENABLE': 'DISABLE',
+\               'enabled': 'disabled',
+\               'Enabled': 'Disabled',
+\               'ENABLED': 'DISABLED'
 \	}
 	for val1 in keys(values)
 		let val2=values[val1]
